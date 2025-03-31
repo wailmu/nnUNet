@@ -74,6 +74,7 @@ class nnUNetTrainer_2000epochs(nnUNetTrainer):
                  device: torch.device = torch.device('cuda')):
         super().__init__(plans, configuration, fold, dataset_json, unpack_dataset, device)
         self.num_epochs = 2000
+        self.initial_lr = 1e-4
 
     
 class nnUNetTrainer_4000epochs(nnUNetTrainer):
