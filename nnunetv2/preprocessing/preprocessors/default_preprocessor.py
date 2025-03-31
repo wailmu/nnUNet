@@ -29,6 +29,7 @@ from nnunetv2.utilities.find_class_by_name import recursive_find_python_class
 from nnunetv2.utilities.plans_handling.plans_handler import PlansManager, ConfigurationManager
 from nnunetv2.utilities.utils import get_filenames_of_train_images_and_targets
 
+import os
 
 class DefaultPreprocessor(object):
     def __init__(self, verbose: bool = True):
@@ -143,6 +144,9 @@ class DefaultPreprocessor(object):
     def run_case_save(self, output_filename_truncated: str, image_files: List[str], seg_file: str,
                       plans_manager: PlansManager, configuration_manager: ConfigurationManager,
                       dataset_json: Union[dict, str]):
+        if os.path.exists(output_filename_truncated + '.npz') and os.path.exists(output_filename_truncated + '.pkl'):
+            print(f"Skipping {output_filename_truncated} as both files exist.")
+            return
         data, seg, properties = self.run_case(image_files, seg_file, plans_manager, configuration_manager, dataset_json)
         # print('dtypes', data.dtype, seg.dtype)
         np.savez_compressed(output_filename_truncated + '.npz', data=data, seg=seg)
@@ -217,8 +221,8 @@ class DefaultPreprocessor(object):
 
         output_directory = join(nnUNet_preprocessed, dataset_name, configuration_manager.data_identifier)
 
-        if isdir(output_directory):
-            shutil.rmtree(output_directory)
+        #if isdir(output_directory):
+            #shutil.rmtree(output_directory)
 
         maybe_mkdir_p(output_directory)
 
