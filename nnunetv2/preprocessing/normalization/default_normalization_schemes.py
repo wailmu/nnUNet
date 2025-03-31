@@ -96,3 +96,13 @@ class RGBTo01Normalization(ImageNormalization):
         image /= 255.
         return image
 
+
+class MaxScaling(ImageNormalization):
+    leaves_pixels_outside_mask_at_zero_if_use_mask_for_norm_is_true = False
+
+    def run(self, image: np.ndarray, seg: np.ndarray = None) -> np.ndarray:
+        image = image.astype(self.target_dtype, copy=False)
+        intensity_max = 0.03326416015625
+        np.clip(image, 0, intensity_max, out=image)
+        image /= intensity_max
+        return image.astype(self.target_dtype, copy=False)
