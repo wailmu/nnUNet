@@ -24,6 +24,7 @@ class SimpleITKIO(BaseReaderWriter):
         '.nii.gz',
         '.nrrd',
         '.mha',
+        '.tiff',
         '.gipl'
     ]
 
